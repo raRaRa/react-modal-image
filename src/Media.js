@@ -36,6 +36,7 @@ export default class Media extends Component {
             style={styles}
             loop={loop}
             autoPlay={autoPlay}
+            controls
           />
           :
           <img
