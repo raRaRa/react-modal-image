@@ -1,9 +1,25 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 
-import ModalImage from "../../src";
+import ModalImage, { Lightbox } from "../../src";
 
 class Demo extends Component {
+  state = {
+    isLightboxOpen: false
+  };
+
+  openLigthbox = () => {
+    this.setState({
+      isLightboxOpen: true,
+    })
+  }
+
+  closeLigthbox = () => {
+    this.setState({
+      isLightboxOpen: false,
+    })
+  }
+
   render() {
     return (
       <div>
@@ -53,10 +69,39 @@ class Demo extends Component {
         </div>
         <p>^ click or inspect the image above</p>
 
-        <h2>Further info</h2>
+        <h2>#5 with video</h2>
 
+        <div style={{ maxWidth: "400px" }}>
+          <ModalImage
+            alt="Random dog video from imgur"
+            medium="video.mp4"
+            loop
+            autoPlay
+          />
+        </div>
+        <p>^ click or inspect the image above</p>
+
+        <h2>#6 Component API</h2>
+        {
+          this.state.isLightboxOpen &&
+          <Lightbox
+            small="example_img_small.jpg"
+            large="example_img_large.jpg"
+            alt="Hello World!"
+            onClose={this.closeLigthbox}
+          />
+
+        }
+        <button
+          onClick={this.openLigthbox}
+        >
+          Open lightbox
+        </button>
+        <p>^ click on the button to open the Lightbox</p>
+
+        <h2>Further info</h2>
         <p>
-          <a href="https://github.com/aautio/react-modal-image">Github</a>
+          <a href="https://github.com/aautio/react-modal-image">GitHub</a>
         </p>
       </div>
     );

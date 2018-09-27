@@ -2,6 +2,7 @@ import React, { Component } from "react";
 
 import { smallImage } from "./styles";
 import Lightbox from "./Lightbox";
+import { isVideoFile } from "./MediaHelpers";
 
 export { default as Lightbox } from "./Lightbox";
 
@@ -15,19 +16,43 @@ export default class extends Component {
   };
 
   render() {
-    const { className, small, smallSrcSet, medium, large, alt, hideDownload, hideZoom } = this.props;
+    const {
+      className,
+      small,
+      smallSrcSet,
+      medium,
+      large,
+      alt,
+      hideDownload,
+      hideZoom,
+      loop,
+      autoPlay,
+    } = this.props;
     const { modalOpen } = this.state;
+    const isVideo = isVideoFile(large || medium)
 
     return (
       <div>
-        <img
-          className={className}
-          style={smallImage}
-          onClick={this.toggleModal}
-          src={small}
-          srcSet={smallSrcSet}
-          alt={alt}
-        />
+        {isVideo ?
+          <video
+            className={className}
+            style={smallImage}
+            onClick={this.toggleModal}
+            src={small || medium}
+            alt={alt}
+            loop={loop !== undefined}
+            autoPlay={autoPlay !== undefined}
+          />
+          :
+          <img
+            className={className}
+            style={smallImage}
+            onClick={this.toggleModal}
+            src={small}
+            srcSet={smallSrcSet}
+            alt={alt}
+          />
+        }
         {modalOpen && (
           <Lightbox
             medium={medium}
@@ -36,6 +61,8 @@ export default class extends Component {
             onClose={this.toggleModal}
             hideDownload={hideDownload}
             hideZoom={hideZoom}
+            loop={loop !== undefined}
+            autoPlay={autoPlay !== undefined}
           />
         )}
       </div>

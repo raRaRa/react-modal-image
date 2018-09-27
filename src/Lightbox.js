@@ -3,7 +3,9 @@ import React, { Component } from "react";
 import * as style from "./styles";
 
 import Header from "./Header";
-import Image from "./Image";
+import Media from "./Media";
+
+import { isVideoFile } from "./MediaHelpers";
 
 import { SpinnerIcon } from "./icons";
 
@@ -120,8 +122,19 @@ export default class Lightbox extends Component {
   };
 
   render() {
-    const { medium, large, alt, onClose, hideDownload, hideZoom } = this.props;
+    const {
+      medium,
+      large,
+      alt,
+      onClose,
+      hideDownload,
+      hideZoom,
+      loop,
+      autoPlay,
+    } = this.props;
     const { move, zoomed } = this.state;
+
+    const isVideo = isVideoFile(large || medium)
 
     return (
       <div style={style.modal}>
@@ -138,20 +151,26 @@ export default class Lightbox extends Component {
           style={style.modalContent}
         >
           {zoomed && (
-            <Image
+            <Media
               id="react-modal-image-img"
               src={large || medium}
+              isVideo={isVideo}
               styles={style.largeImage(move.x, move.y)}
               handleDoubleClick={this.toggleZoom}
+              loop={loop}
+              autoPlay={autoPlay}
             />
           )}
           {!zoomed && (
-            <Image
+            <Media
               id="react-modal-image-img"
               src={medium || large}
+              isVideo={isVideo}
               styles={style.mediumImage}
               handleDoubleClick={this.toggleZoom}
               contextMenu={!medium}
+              loop={loop}
+              autoPlay={autoPlay}
             />
           )}
         </div>
